@@ -12,6 +12,17 @@ export default defineConfig(
   {
     rules: {
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['../*'],
+              message: 'Use the "@/" path alias instead of relative parent imports (e.g. "@/lib/foo").',
+            },
+          ],
+        },
+      ],
     },
   },
   {

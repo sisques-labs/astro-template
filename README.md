@@ -21,6 +21,13 @@ Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page
 
 There's nothing special about `src/components/`, but that's where React/Vue/Svelte/Preact components go. React and Tailwind CSS are already configured.
 
+Import anything outside the current directory via the `@/` alias (mapped to `src/`) instead of relative parent paths — ESLint enforces this (`no-restricted-imports`):
+
+```ts
+// ✅ import { greeting } from '@/lib/greeting';
+// ❌ import { greeting } from '../lib/greeting';
+```
+
 Any static assets, like images, can be placed in the `public/` directory.
 
 ## 🧞 Commands
