@@ -5,16 +5,18 @@
 [![Node](https://img.shields.io/badge/node-%3E%3D22.12.0-339933?logo=node.js&logoColor=white)](.nvmrc)
 [![License: UNLICENSED](https://img.shields.io/badge/license-UNLICENSED-lightgrey)](package.json)
 
-Minimal Astro starter template used to bootstrap Sisques Labs projects. Astro, React and Tailwind CSS are pre-configured, alongside the linting, testing, Docker and CI/CD setup used across the org.
+Template repository for new Astro projects at Sisques Labs. Astro, React and Tailwind CSS come pre-configured, along with the linting, testing, Docker and CI/CD setup used across the org, so a new project starts from a working baseline instead of a blank scaffold.
 
-## Quick start
+## Using this template
 
-```bash
-pnpm install
-pnpm dev
-```
-
-The dev server runs at `localhost:4321`.
+1. Click **Use this template** on GitHub (or `gh repo create <name> --template sisques-labs/astro-template`).
+2. Update the project identity:
+   - `package.json` — `name`, `description`, `repository.url`, `homepage`
+   - `cliff.toml` — `[remote.github]` `repo`
+   - `.github/workflows/docker.yml` and `release-train.yml` — `image_name` / `ghcr_image_name`
+   - `docker/README.md`
+3. Delete `CHANGELOG.md` if present — Release Train generates it from the first release.
+4. `pnpm install` and start building in `src/`.
 
 ## Project structure
 
@@ -30,8 +32,6 @@ The dev server runs at `localhost:4321`.
 ├── Dockerfile
 └── package.json
 ```
-
-Astro exposes each `.astro`/`.md` file under `src/pages/` as a route. `src/components/` is where React/Vue/Svelte/Preact components go; static assets live in `public/`.
 
 Import anything outside the current directory through the `@/` alias (mapped to `src/`) rather than a relative parent path — ESLint's `no-restricted-imports` enforces this:
 
@@ -76,14 +76,10 @@ Open `http://localhost:8080`. See `docker/README.md` for details.
 
 Workflows in `.github/workflows` reuse shared pipelines from [`sisques-labs/workflows`](https://github.com/sisques-labs/workflows):
 
-| Workflow             | Trigger                            | Purpose                                                          |
-| --------------------- | ----------------------------------- | ----------------------------------------------------------------- |
-| `ci.yml`               | Pull request                        | Lint, test, build                                                  |
-| `docker.yml`           | Pull request                        | Smoke-build the Docker image                                      |
-| `codeql.yml`           | Push/PR to `develop`/`staging`/`main`, weekly | Security analysis                                        |
-| `pr-labeler.yml`       | Pull request                        | Auto-label PRs based on changed files                              |
-| `release-train.yml`    | Push to `develop`/`staging`/`main`  | Version from conventional commits, changelog, publish Docker image |
-
-## Learn more
-
-[Astro documentation](https://docs.astro.build) · [Discord](https://astro.build/chat)
+| Workflow            | Trigger                                       | Purpose                                                             |
+| -------------------- | ----------------------------------------------- | ---------------------------------------------------------------------- |
+| `ci.yml`              | Pull request                                    | Lint, test, build                                                      |
+| `docker.yml`          | Pull request                                    | Smoke-build the Docker image                                          |
+| `codeql.yml`          | Push/PR to `develop`/`staging`/`main`, weekly   | Security analysis                                                      |
+| `pr-labeler.yml`      | Pull request                                    | Auto-label PRs based on changed files                                  |
+| `release-train.yml`   | Push to `develop`/`staging`/`main`              | Version from conventional commits, changelog, publish Docker image     |
