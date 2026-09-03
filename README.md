@@ -1,8 +1,22 @@
 # astro-template
 
-Minimal Astro starter template to speed up new project setup. Comes pre-wired with the tooling used across Sisques Labs projects: linting, formatting, git hooks, tests, Docker and CI/CD.
+[![CI](https://github.com/sisques-labs/astro-template/actions/workflows/ci.yml/badge.svg)](https://github.com/sisques-labs/astro-template/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/sisques-labs/astro-template/actions/workflows/codeql.yml/badge.svg)](https://github.com/sisques-labs/astro-template/actions/workflows/codeql.yml)
+[![Node](https://img.shields.io/badge/node-%3E%3D22.12.0-339933?logo=node.js&logoColor=white)](.nvmrc)
+[![License: UNLICENSED](https://img.shields.io/badge/license-UNLICENSED-lightgrey)](package.json)
 
-## 🚀 Project Structure
+Minimal Astro starter template used to bootstrap Sisques Labs projects. Astro, React and Tailwind CSS are pre-configured, alongside the linting, testing, Docker and CI/CD setup used across the org.
+
+## Quick start
+
+```bash
+pnpm install
+pnpm dev
+```
+
+The dev server runs at `localhost:4321`.
+
+## Project structure
 
 ```text
 /
@@ -17,65 +31,59 @@ Minimal Astro starter template to speed up new project setup. Comes pre-wired wi
 └── package.json
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+Astro exposes each `.astro`/`.md` file under `src/pages/` as a route. `src/components/` is where React/Vue/Svelte/Preact components go; static assets live in `public/`.
 
-There's nothing special about `src/components/`, but that's where React/Vue/Svelte/Preact components go. React and Tailwind CSS are already configured.
-
-Import anything outside the current directory via the `@/` alias (mapped to `src/`) instead of relative parent paths — ESLint enforces this (`no-restricted-imports`):
+Import anything outside the current directory through the `@/` alias (mapped to `src/`) rather than a relative parent path — ESLint's `no-restricted-imports` enforces this:
 
 ```ts
-// ✅ import { greeting } from '@/lib/greeting';
-// ❌ import { greeting } from '../lib/greeting';
+import { greeting } from '@/lib/greeting'; // ✓
+import { greeting } from '../lib/greeting'; // ✗
 ```
 
-Any static assets, like images, can be placed in the `public/` directory.
+## Scripts
 
-## 🧞 Commands
+| Command          | Action                                           |
+| ---------------- | ------------------------------------------------- |
+| `pnpm dev`        | Start the dev server at `localhost:4321`          |
+| `pnpm build`      | Type-check and build to `./dist/`                 |
+| `pnpm preview`    | Preview the production build locally              |
+| `pnpm lint`       | Lint and auto-fix with ESLint                      |
+| `pnpm format`     | Format the codebase with Prettier                  |
+| `pnpm test`       | Run the test suite with Vitest                     |
+| `pnpm test:watch` | Run tests in watch mode                            |
+| `pnpm test:cov`   | Run tests with coverage                            |
+| `pnpm astro ...`  | Run any Astro CLI command, e.g. `astro check`      |
 
-All commands are run from the root of the project, from a terminal:
+## Tooling
 
-| Command             | Action                                            |
-| :------------------ | :------------------------------------------------ |
-| `pnpm install`       | Installs dependencies                             |
-| `pnpm dev`           | Starts local dev server at `localhost:4321`       |
-| `pnpm build`         | Type-checks and builds the production site to `./dist/` |
-| `pnpm preview`       | Preview your build locally, before deploying      |
-| `pnpm format`        | Formats the codebase with Prettier                |
-| `pnpm lint`          | Lints and auto-fixes with ESLint                  |
-| `pnpm test`          | Runs the test suite with Vitest                   |
-| `pnpm test:watch`    | Runs tests in watch mode                          |
-| `pnpm test:cov`      | Runs tests with coverage                          |
-| `pnpm astro ...`     | Run CLI commands like `astro add`, `astro check`  |
+- **ESLint + Prettier** — linting and formatting, enforced via Husky/lint-staged on every commit.
+- **Husky** — `pre-commit` runs lint-staged; `pre-push` runs the build and affected tests.
+- **Vitest** — configured with `passWithNoTests` so the template stays green until real tests exist.
+- **Renovate** — automated dependency updates (`renovate.json`, extends `sisques-labs/workflows`).
 
-## ✅ Quality & Git hooks
+## Docker
 
-- **ESLint + Prettier** enforce linting and formatting (`eslint.config.mjs`, `.prettierrc`).
-- **Husky + lint-staged** run formatting/linting on staged files before each commit, and build + run affected tests before each push.
-- **Vitest** is configured with `passWithNoTests` so the template stays green until real tests are added.
-
-## 🐳 Docker
-
-The app builds to a static site served by nginx (`Dockerfile`, `docker/nginx.conf`):
+Builds to a static site served by nginx (`Dockerfile`, `docker/nginx.conf`):
 
 ```bash
 docker build -t astro-template .
 docker run -p 8080:8080 astro-template
 ```
 
-Then open http://localhost:8080. See `docker/README.md` for details.
+Open `http://localhost:8080`. See `docker/README.md` for details.
 
-## ⚙️ CI/CD
+## CI/CD
 
-GitHub Actions workflows live in `.github/workflows` and reuse shared workflows from [`sisques-labs/workflows`](https://github.com/sisques-labs/workflows):
+Workflows in `.github/workflows` reuse shared pipelines from [`sisques-labs/workflows`](https://github.com/sisques-labs/workflows):
 
-- **CI** (`ci.yml`) — lint, test and build on every PR.
-- **Docker Build** (`docker.yml`) — smoke-builds the Docker image on every PR.
-- **CodeQL** (`codeql.yml`) — security analysis on push/PR to `develop`/`staging`/`main` and weekly on a schedule.
-- **PR Labeler** (`pr-labeler.yml`) — auto-labels PRs based on changed files (`labeler.yml`).
-- **Release Train** (`release-train.yml`) — versions releases from conventional commits, generates the changelog (`cliff.toml`) and publishes the Docker image to Docker Hub/GHCR on push to `develop`/`staging`/`main`.
+| Workflow             | Trigger                            | Purpose                                                          |
+| --------------------- | ----------------------------------- | ----------------------------------------------------------------- |
+| `ci.yml`               | Pull request                        | Lint, test, build                                                  |
+| `docker.yml`           | Pull request                        | Smoke-build the Docker image                                      |
+| `codeql.yml`           | Push/PR to `develop`/`staging`/`main`, weekly | Security analysis                                        |
+| `pr-labeler.yml`       | Pull request                        | Auto-label PRs based on changed files                              |
+| `release-train.yml`    | Push to `develop`/`staging`/`main`  | Version from conventional commits, changelog, publish Docker image |
 
-Dependency updates are managed by [Renovate](https://docs.renovatebot.com/) (`renovate.json`).
+## Learn more
 
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+[Astro documentation](https://docs.astro.build) · [Discord](https://astro.build/chat)
