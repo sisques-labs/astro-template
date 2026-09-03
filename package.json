@@ -9,7 +9,7 @@
   },
   "homepage": "https://github.com/sisques-labs/astro-template",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "MIT",
   "packageManager": "pnpm@11.24.0",
   "type": "module",
   "engines": {

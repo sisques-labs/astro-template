@@ -3,7 +3,7 @@
 [![CI](https://github.com/sisques-labs/astro-template/actions/workflows/ci.yml/badge.svg)](https://github.com/sisques-labs/astro-template/actions/workflows/ci.yml)
 [![CodeQL](https://github.com/sisques-labs/astro-template/actions/workflows/codeql.yml/badge.svg)](https://github.com/sisques-labs/astro-template/actions/workflows/codeql.yml)
 [![Node](https://img.shields.io/badge/node-%3E%3D22.12.0-339933?logo=node.js&logoColor=white)](.nvmrc)
-[![License: UNLICENSED](https://img.shields.io/badge/license-UNLICENSED-lightgrey)](package.json)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 Template repository for new Astro projects at Sisques Labs. Astro, React and Tailwind CSS come pre-configured, along with the linting, testing, Docker and CI/CD setup used across the org, so a new project starts from a working baseline instead of a blank scaffold.
 
