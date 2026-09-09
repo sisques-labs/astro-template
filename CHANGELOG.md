@@ -1,6 +1,16 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## [0.1.1] - 2026-09-09
+
+### Bug Fixes
+- **deps:** Update dependency @astrojs/react to v6.0.5 (e594bea)
+
+### Chore
+- **deps:** Pin node.js to v26.8.1 (a0d1feb)
+- **deps:** Update dependency @types/react-dom to v19.2.7 (a1b36c3)
+- **deps:** Update dependency lint-staged to v17.5.0 (7162b62)
+- **deps:** Update dependency eslint to v10.10.0 (354b9da)
 ## [0.1.0] - 2026-09-03
 
 ### Bug Fixes
