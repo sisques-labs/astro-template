@@ -10,7 +10,7 @@
   "homepage": "https://github.com/sisques-labs/astro-template",
   "private": true,
   "license": "MIT",
-  "packageManager": "pnpm@11.24.0",
+  "packageManager": "pnpm@11.27.0",
   "type": "module",
   "engines": {
     "node": "26.8.2"
