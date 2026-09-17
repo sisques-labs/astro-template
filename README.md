@@ -13,9 +13,9 @@ Template repository for new Astro projects at Sisques Labs. Astro, React and Tai
 2. Update the project identity:
    - `package.json` — `name`, `description`, `repository.url`, `homepage`
    - `cliff.toml` — `[remote.github]` `repo`
-   - `.github/workflows/docker.yml` and `release-train.yml` — `image_name` / `ghcr_image_name`
+   - `.github/workflows/docker.yml`, `trunk-ci-cd.yml`, `release.yml`, `image-cleanup.yml` — `image_name` / `ghcr_image_name`
    - `docker/README.md`
-3. Delete `CHANGELOG.md` if present — Release Train generates it from the first release.
+3. Delete `CHANGELOG.md` if present — `release.yml` generates it from the first release.
 4. `pnpm install` and start building in `src/`.
 
 ## Project structure
@@ -76,10 +76,12 @@ Open `http://localhost:8080`. See `docker/README.md` for details.
 
 Workflows in `.github/workflows` reuse shared pipelines from [`sisques-labs/workflows`](https://github.com/sisques-labs/workflows):
 
-| Workflow            | Trigger                                       | Purpose                                                             |
-| -------------------- | ----------------------------------------------- | ---------------------------------------------------------------------- |
-| `ci.yml`              | Pull request                                    | Lint, test, build                                                      |
-| `docker.yml`          | Pull request                                    | Smoke-build the Docker image                                          |
-| `codeql.yml`          | Push/PR to `develop`/`staging`/`main`, weekly   | Security analysis                                                      |
-| `pr-labeler.yml`      | Pull request                                    | Auto-label PRs based on changed files                                  |
-| `release-train.yml`   | Push to `develop`/`staging`/`main`              | Version from conventional commits, changelog, publish Docker image     |
+| Workflow              | Trigger                          | Purpose                                                                 |
+| --------------------- | --------------------------------- | ------------------------------------------------------------------------ |
+| `ci.yml`              | Pull request                      | Lint, test, build                                                       |
+| `docker.yml`          | Pull request                      | Smoke-build the Docker image                                            |
+| `codeql.yml`          | Push to `main`, PR, weekly        | Security analysis                                                       |
+| `pr-labeler.yml`      | Pull request                      | Auto-label PRs based on changed files                                   |
+| `trunk-ci-cd.yml`     | Push to `main`                    | Build + publish commit-addressed image, deploy to `dev` then `pre`      |
+| `release.yml`         | Manual (`workflow_dispatch`)      | Promote a validated digest to a versioned stable release, zero inputs   |
+| `image-cleanup.yml`   | Weekly (+ manual)                 | Delete old ephemeral `:sha-*` tags on Docker Hub/GHCR                   |
